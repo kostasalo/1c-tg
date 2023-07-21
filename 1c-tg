@@ -1,0 +1,37 @@
+import requests
+
+def send_telegram_message(token, chat_id, message):
+    api_url = f"https://api.telegram.org/bot{token}/sendMessage"
+    data = {"chat_id": chat_id, "text": message}
+
+    try:
+        response = requests.post(api_url, json=data)
+        response_json = response.json()
+        if response_json["ok"]:
+            return True
+        else:
+            print("Ошибка при отправке сообщения в Telegram:", response_json["description"])
+            return False
+    except Exception as e:
+        print("Ошибка при отправке сообщения в Telegram:", e)
+        return False
+
+def handle_order_created(order_info):
+    # Ваш код для обработки информации о созданном заказе и формирования сообщения для Telegram
+    message = "Новый заказ создан:\n" + order_info
+
+    # Замените 'TOKEN' и 'CHAT_ID' на реальные значения вашего бота
+    bot_token = "TOKEN"
+    chat_id = "CHAT_ID"
+
+    if send_telegram_message(bot_token, chat_id, message):
+        print("Уведомление отправлено успешно.")
+    else:
+        print("Ошибка при отправке уведомления.")
+
+# Ваш код для настройки сервера и получения уведомлений о заказах из 1С
+# Например, использование Flask для создания веб-сервера и обработки входящих запросов с информацией о заказах.
+
+if __name__ == "__main__":
+    # Ваш код для запуска сервера и ожидания уведомлений о заказах
+    # При получении уведомления, вызывайте функцию handle_order_created() с информацией о заказе
